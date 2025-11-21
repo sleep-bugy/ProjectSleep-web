@@ -191,6 +191,34 @@ export const ApiService = {
       }, 600);
     });
   },
+  updateRom: async (rom: RomWithDevice): Promise<boolean> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const index = roms.findIndex(r => r.id === rom.id);
+        if (index !== -1) {
+          // Mock update
+          const updated = { ...roms[index], ...rom, deviceId: rom.device.id };
+          roms[index] = updated;
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 500);
+    });
+  },
+  deleteRom: async (id: number): Promise<boolean> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const index = roms.findIndex(r => r.id === id);
+        if (index !== -1) {
+          roms.splice(index, 1);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 500);
+    });
+  },
   getTeam: async (): Promise<TeamMember[]> => {
     return new Promise(resolve => setTimeout(() => resolve(teamMembers), 500));
   },

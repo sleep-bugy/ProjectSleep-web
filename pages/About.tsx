@@ -42,7 +42,7 @@ export const About: React.FC = () => {
                 We believe in transparency. Our code is open source and available on GitHub. 
                 Feel free to audit, contribute, or fork our repositories.
               </p>
-              <a href="#" className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-black text-white rounded-lg hover:opacity-90 transition-opacity">
+              <a href="https://github.com/sleep-bugy" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-black text-white rounded-lg hover:opacity-90 transition-opacity">
                 <Github size={18} /> GitHub
               </a>
             </div>

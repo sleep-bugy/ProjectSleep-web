@@ -1,21 +1,38 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useForm, Controller } from 'react-hook-form';
 import { ApiService } from '../services/api';
 import { RomWithDevice, OSType } from '../types';
-import { Search, Filter, Download as DownloadIcon, Calendar, FileText, Hash, ChevronDown, ChevronUp, Edit, Plus, Trash } from 'lucide-react';
+import { Search, Download as DownloadIcon, Calendar, FileText, Hash, Edit, Plus, Trash, Save, X } from 'lucide-react';
 import { AuthContext } from '../App';
+import { MarkdownEditor } from '../components/MarkdownEditor';
+
+interface EditRomForm {
+  title: string;
+  version: string;
+  changelog: string;
+  downloadUrl: string;
+  notes: string;
+}
 
 export const Download: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   
   const [roms, setRoms] = useState<RomWithDevice[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState<OSType[]>([]);
+  
+  // Detail Modal
   const [selectedRom, setSelectedRom] = useState<RomWithDevice | null>(null);
+  
+  // Edit Modal
+  const [editingRom, setEditingRom] = useState<RomWithDevice | null>(null);
+  const { register, handleSubmit, control, reset, formState: { isSubmitting } } = useForm<EditRomForm>();
 
   // Parse query params for initial filter
   useEffect(() => {
@@ -41,6 +58,34 @@ export const Download: React.FC = () => {
     setFilters(prev => 
       prev.includes(type) ? prev.filter(f => f !== type) : [...prev, type]
     );
+  };
+
+  const handleEditClick = (e: React.MouseEvent, rom: RomWithDevice) => {
+    e.stopPropagation();
+    setEditingRom(rom);
+    reset({
+      title: rom.title,
+      version: rom.version,
+      changelog: rom.changelog,
+      downloadUrl: rom.downloadUrl,
+      notes: rom.notes || ''
+    });
+  };
+
+  const handleDeleteClick = async (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    if (window.confirm('Are you sure you want to delete this ROM?')) {
+      await ApiService.deleteRom(id);
+      setRoms(prev => prev.filter(r => r.id !== id));
+    }
+  };
+
+  const onUpdateSubmit = async (data: EditRomForm) => {
+    if (!editingRom) return;
+    const updatedRom = { ...editingRom, ...data };
+    await ApiService.updateRom(updatedRom);
+    setRoms(prev => prev.map(r => r.id === editingRom.id ? updatedRom : r));
+    setEditingRom(null);
   };
 
   const badgeColor = (type: OSType) => {
@@ -85,7 +130,10 @@ export const Download: React.FC = () => {
             </div>
 
             {user?.role === 'admin' && (
-              <button className="px-4 py-2 bg-project-primary text-white rounded-lg flex items-center gap-2 shadow-lg hover:bg-blue-600">
+              <button 
+                onClick={() => navigate('/admin')}
+                className="px-4 py-2 bg-project-primary text-white rounded-lg flex items-center gap-2 shadow-lg hover:bg-blue-600"
+              >
                 <Plus size={18} /> Upload Build
               </button>
             )}
@@ -134,8 +182,8 @@ export const Download: React.FC = () => {
                 </div>
                 {user?.role === 'admin' && (
                   <div className="px-4 py-2 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-2">
-                    <button className="p-1 text-slate-500 hover:text-project-primary"><Edit size={16}/></button>
-                    <button className="p-1 text-slate-500 hover:text-red-500"><Trash size={16}/></button>
+                    <button onClick={(e) => handleEditClick(e, rom)} className="p-1 text-slate-500 hover:text-project-primary"><Edit size={16}/></button>
+                    <button onClick={(e) => handleDeleteClick(e, rom.id)} className="p-1 text-slate-500 hover:text-red-500"><Trash size={16}/></button>
                   </div>
                 )}
               </div>
@@ -189,6 +237,58 @@ export const Download: React.FC = () => {
                  </a>
                  <p className="text-center text-xs text-slate-400 mt-2">By downloading, you agree to our terms of use.</p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Modal */}
+        {editingRom && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setEditingRom(null)}>
+            <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" onClick={e => e.stopPropagation()}>
+              <div className="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                <h2 className="text-2xl font-bold dark:text-white">Edit ROM</h2>
+                <button onClick={() => setEditingRom(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><X size={24} /></button>
+              </div>
+
+              <form onSubmit={handleSubmit(onUpdateSubmit)} className="flex flex-col flex-grow overflow-hidden">
+                <div className="p-6 overflow-y-auto custom-scrollbar space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title</label>
+                    <input {...register('title')} className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Version</label>
+                      <input {...register('version')} className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Download URL</label>
+                      <input {...register('downloadUrl')} className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Notes</label>
+                    <input {...register('notes')} className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Changelog</label>
+                    <Controller
+                      name="changelog"
+                      control={control}
+                      render={({ field }) => (
+                        <MarkdownEditor value={field.value} onChange={field.onChange} />
+                      )}
+                    />
+                  </div>
+                </div>
+
+                <div className="p-6 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3">
+                  <button type="button" onClick={() => setEditingRom(null)} className="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">Cancel</button>
+                  <button type="submit" disabled={isSubmitting} className="px-6 py-2 bg-project-primary text-white rounded-lg hover:bg-blue-600 font-medium flex items-center gap-2">
+                    <Save size={18} /> Save Changes
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
