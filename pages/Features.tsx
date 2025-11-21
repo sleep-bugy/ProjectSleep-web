@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { ApiService } from '../services/api';
 import { Feature } from '../types';
 import { AuthContext } from '../App';
@@ -12,6 +13,7 @@ interface FeatureForm {
 }
 
 export const Features: React.FC = () => {
+  const { t } = useTranslation();
   const [features, setFeatures] = useState<Feature[]>([]);
   const [selectedFeature, setSelectedFeature] = useState<Feature | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -66,15 +68,15 @@ export const Features: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h1 className="text-4xl font-bold text-slate-800 dark:text-white mb-4">Features</h1>
-            <p className="text-slate-500 dark:text-slate-300">Discover what makes SleepOS unique.</p>
+            <h1 className="text-4xl font-bold text-slate-800 dark:text-white mb-4">{t('features.title')}</h1>
+            <p className="text-slate-500 dark:text-slate-300">{t('features.subtitle')}</p>
           </div>
           {user?.role === 'admin' && (
             <button 
               onClick={handleAddClick}
               className="px-4 py-2 bg-project-primary text-white rounded-lg flex items-center gap-2 hover:bg-blue-600 transition-colors"
             >
-              <Plus size={18} /> Add Feature
+              <Plus size={18} /> {t('features.add')}
             </button>
           )}
         </div>
@@ -123,13 +125,13 @@ export const Features: React.FC = () => {
                       onClick={() => handleEditClick(selectedFeature)}
                       className="px-4 py-2 bg-project-primary hover:bg-blue-600 text-white rounded-lg text-sm font-medium flex items-center gap-2"
                     >
-                      <Edit2 size={16} /> Edit Feature
+                      <Edit2 size={16} /> {t('features.edit')}
                     </button>
                     <button 
                       onClick={() => handleDeleteClick(selectedFeature.id)}
                       className="px-4 py-2 bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400 rounded-lg text-sm font-medium flex items-center gap-2"
                     >
-                      <Trash2 size={16} /> Delete
+                      <Trash2 size={16} /> {t('features.delete')}
                     </button>
                   </div>
                 )}
@@ -150,12 +152,12 @@ export const Features: React.FC = () => {
               </button>
               
               <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-white">
-                {editingFeature ? 'Edit Feature' : 'Add New Feature'}
+                {editingFeature ? t('features.edit') : t('features.add')}
               </h2>
 
               <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('features.form.title')}</label>
                   <input 
                     {...register('title', { required: true })} 
                     className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white focus:ring-2 focus:ring-project-primary"
@@ -165,7 +167,7 @@ export const Features: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Image URL</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('features.form.image')}</label>
                   <input 
                     {...register('imageUrl', { required: true })} 
                     className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white focus:ring-2 focus:ring-project-primary"
@@ -175,7 +177,7 @@ export const Features: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('features.form.desc')}</label>
                   <textarea 
                     {...register('description', { required: true })} 
                     rows={5}
@@ -191,7 +193,7 @@ export const Features: React.FC = () => {
                      onClick={() => setIsFormOpen(false)}
                      className="px-6 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-medium"
                    >
-                     Cancel
+                     {t('features.cancel')}
                    </button>
                    <button 
                      type="submit"
@@ -199,7 +201,7 @@ export const Features: React.FC = () => {
                      className="px-6 py-2 bg-project-primary hover:bg-blue-600 text-white rounded-lg font-bold flex items-center gap-2 shadow-lg disabled:opacity-70"
                    >
                      <Save size={18} />
-                     {isSubmitting ? 'Saving...' : 'Save Feature'}
+                     {isSubmitting ? t('common.loading') : t('features.save')}
                    </button>
                 </div>
               </form>

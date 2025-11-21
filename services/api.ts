@@ -187,6 +187,9 @@ export const ApiService = {
           filtered = filtered.filter(r => typeFilters.includes(r.osType));
         }
 
+        // Sort by newest first
+        filtered.sort((a, b) => new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime());
+
         resolve(filtered);
       }, 600);
     });
@@ -257,6 +260,28 @@ export const ApiService = {
   },
   adminUpload: async (data: any): Promise<boolean> => {
     console.log("Admin uploading...", data);
-    return new Promise(resolve => setTimeout(() => resolve(true), 1500));
+    return new Promise(resolve => {
+      setTimeout(() => {
+        // Create a new ROM object
+        const newRom: Rom = {
+          id: Math.max(...roms.map(r => r.id), 100) + 1,
+          deviceId: Number(data.deviceId),
+          title: data.title,
+          version: data.version,
+          osType: data.osType,
+          fileSize: data.fileSize,
+          uploadDate: new Date().toISOString().split('T')[0], // Today's date YYYY-MM-DD
+          downloadCount: 0,
+          changelog: data.changelog,
+          notes: data.notes || '',
+          downloadUrl: data.downloadUrl,
+          checksum: data.checksum || 'N/A'
+        };
+        
+        // Push to mock database
+        roms.push(newRom);
+        resolve(true);
+      }, 1500);
+    });
   }
 };

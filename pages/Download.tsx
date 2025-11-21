@@ -134,7 +134,7 @@ export const Download: React.FC = () => {
                 onClick={() => navigate('/admin')}
                 className="px-4 py-2 bg-project-primary text-white rounded-lg flex items-center gap-2 shadow-lg hover:bg-blue-600"
               >
-                <Plus size={18} /> Upload Build
+                <Plus size={18} /> {t('download.upload_build')}
               </button>
             )}
           </div>
@@ -171,13 +171,13 @@ export const Download: React.FC = () => {
                     onClick={() => setSelectedRom(rom)}
                     className="flex-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-2 rounded-lg font-medium transition-colors"
                   >
-                    Details
+                    {t('download.details')}
                   </button>
                   <a 
                     href={rom.downloadUrl}
                     className="flex-1 bg-project-primary hover:bg-blue-600 text-white py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
                   >
-                    <DownloadIcon size={18} /> Get
+                    <DownloadIcon size={18} /> {t('download.get')}
                   </a>
                 </div>
                 {user?.role === 'admin' && (
@@ -233,9 +233,9 @@ export const Download: React.FC = () => {
                     href={selectedRom.downloadUrl}
                     className="w-full py-4 bg-project-primary hover:bg-blue-600 text-white font-bold text-lg rounded-xl shadow-lg flex items-center justify-center gap-2 transition-colors"
                  >
-                    <DownloadIcon size={24} /> Download Now
+                    <DownloadIcon size={24} /> {t('download.download_now')}
                  </a>
-                 <p className="text-center text-xs text-slate-400 mt-2">By downloading, you agree to our terms of use.</p>
+                 <p className="text-center text-xs text-slate-400 mt-2">{t('download.terms')}</p>
               </div>
             </div>
           </div>
@@ -246,7 +246,7 @@ export const Download: React.FC = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setEditingRom(null)}>
             <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" onClick={e => e.stopPropagation()}>
               <div className="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                <h2 className="text-2xl font-bold dark:text-white">Edit ROM</h2>
+                <h2 className="text-2xl font-bold dark:text-white">{t('download.edit')}</h2>
                 <button onClick={() => setEditingRom(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><X size={24} /></button>
               </div>
 
@@ -285,7 +285,7 @@ export const Download: React.FC = () => {
                 <div className="p-6 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3">
                   <button type="button" onClick={() => setEditingRom(null)} className="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">Cancel</button>
                   <button type="submit" disabled={isSubmitting} className="px-6 py-2 bg-project-primary text-white rounded-lg hover:bg-blue-600 font-medium flex items-center gap-2">
-                    <Save size={18} /> Save Changes
+                    <Save size={18} /> {t('download.save')}
                   </button>
                 </div>
               </form>

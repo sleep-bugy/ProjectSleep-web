@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Upload, FileText, Layers, Smartphone, Clock, Check, X, Github, Mail, Link as LinkIcon, Plus, Server, Edit2, Image as ImageIcon } from 'lucide-react';
+import { Upload, FileText, Layers, Smartphone, Clock, Check, X, Github, Mail, Link as LinkIcon, Plus, Server, Edit2, Image as ImageIcon, Hash, Info } from 'lucide-react';
 import { ApiService } from '../services/api';
 import { OSType, TeamApplication, Device } from '../types';
 import { MarkdownEditor } from '../components/MarkdownEditor';
@@ -252,6 +252,23 @@ export const AdminDashboard: React.FC = () => {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">File Size</label>
                       <input {...register('fileSize')} placeholder="e.g. 1.5 GB" className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white" />
+                    </div>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                       <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Checksum (MD5/SHA1)</label>
+                       <div className="relative">
+                         <Hash className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                         <input {...register('checksum')} placeholder="e.g. md5: 8923..." className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white" />
+                       </div>
+                    </div>
+                     <div>
+                       <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Notes (Optional)</label>
+                       <div className="relative">
+                          <Info className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                          <input {...register('notes')} placeholder="e.g. Clean flash needed" className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 dark:text-white" />
+                       </div>
                     </div>
                   </div>
 

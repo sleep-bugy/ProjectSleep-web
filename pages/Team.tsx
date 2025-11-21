@@ -34,7 +34,7 @@ export const Team: React.FC = () => {
       {/* Hero */}
       <div className="bg-project-darker py-20 text-center text-white mb-12">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('team.title')}</h1>
-        <p className="text-slate-400 max-w-2xl mx-auto px-4">Meet the passionate minds behind Project Sleep.</p>
+        <p className="text-slate-400 max-w-2xl mx-auto px-4">{t('team.subtitle')}</p>
       </div>
 
       <div className="container mx-auto px-4">
@@ -60,7 +60,7 @@ export const Team: React.FC = () => {
           <div className="p-8 md:p-12">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-2 text-slate-800 dark:text-white">{t('team.apply')}</h2>
-              <p className="text-slate-500 dark:text-slate-400">Want to contribute? We are always looking for talent.</p>
+              <p className="text-slate-500 dark:text-slate-400">{t('team.want_contribute')}</p>
             </div>
 
             {submitted ? (
@@ -68,15 +68,15 @@ export const Team: React.FC = () => {
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle size={40} />
                 </div>
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Application Sent!</h3>
-                <p className="text-slate-500">We will contact you shortly at your email address.</p>
-                <button onClick={() => setSubmitted(false)} className="mt-8 text-project-primary hover:underline">Send another</button>
+                <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">{t('team.success_title')}</h3>
+                <p className="text-slate-500">{t('team.success_msg')}</p>
+                <button onClick={() => setSubmitted(false)} className="mt-8 text-project-primary hover:underline">{t('team.send_another')}</button>
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('team.form.name')}</label>
                     <input 
                       {...register('name', { required: true })} 
                       className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:border-project-primary focus:ring-2 focus:ring-project-primary dark:text-white"
@@ -84,7 +84,7 @@ export const Team: React.FC = () => {
                     {errors.name && <span className="text-red-500 text-xs mt-1">Name is required</span>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('team.form.email')}</label>
                     <input 
                       type="email"
                       {...register('email', { required: true })} 
@@ -96,28 +96,28 @@ export const Team: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">GitHub / Portfolio</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('team.form.github')}</label>
                     <input 
                       {...register('github', { required: true })} 
                       className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:border-project-primary focus:ring-2 focus:ring-project-primary dark:text-white"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Role Applying For</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('team.form.role')}</label>
                     <select 
                       {...register('role')} 
                       className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:border-project-primary focus:ring-2 focus:ring-project-primary dark:text-white"
                     >
-                      <option value="developer">Developer</option>
-                      <option value="designer">Designer</option>
-                      <option value="maintainer">Maintainer</option>
-                      <option value="community_manager">Community Manager</option>
+                      <option value="developer">{t('team.form.roles.developer')}</option>
+                      <option value="designer">{t('team.form.roles.designer')}</option>
+                      <option value="maintainer">{t('team.form.roles.maintainer')}</option>
+                      <option value="community_manager">{t('team.form.roles.community_manager')}</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Why do you want to join?</label>
+                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t('team.form.message')}</label>
                    <textarea 
                      {...register('message', { required: true })}
                      rows={4}
@@ -131,7 +131,7 @@ export const Team: React.FC = () => {
                     disabled={isSubmitting}
                     className="px-8 py-4 bg-project-primary hover:bg-blue-600 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Sending...' : <>Submit Application <Send size={18} /></>}
+                    {isSubmitting ? t('team.form.sending') : <>{t('team.form.submit')} <Send size={18} /></>}
                   </button>
                 </div>
               </form>

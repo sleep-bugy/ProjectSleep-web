@@ -46,9 +46,9 @@ export const Home: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 -mt-24 relative z-20">
             {[
-              { title: OSType.SleepOS, desc: "HyperOS-based stability with custom features.", icon: <Zap className="text-yellow-400" size={32} /> },
-              { title: OSType.AOSP, desc: "Pure Android experience, clean and bloat-free.", icon: <Smartphone className="text-green-400" size={32} /> },
-              { title: OSType.Port, desc: "Experience other OEM skins on your device.", icon: <Shield className="text-purple-400" size={32} /> },
+              { title: OSType.SleepOS, desc: t('home.cards.sleepos_desc'), icon: <Zap className="text-yellow-400" size={32} /> },
+              { title: OSType.AOSP, desc: t('home.cards.aosp_desc'), icon: <Smartphone className="text-green-400" size={32} /> },
+              { title: OSType.Port, desc: t('home.cards.port_desc'), icon: <Shield className="text-purple-400" size={32} /> },
             ].map((item) => (
               <Link 
                 key={item.title}
@@ -60,7 +60,7 @@ export const Home: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-2 text-slate-800 dark:text-white">{item.title}</h3>
                 <p className="text-slate-500 dark:text-slate-300 mb-4">{item.desc}</p>
-                <span className="text-project-primary font-medium flex items-center gap-1">Explore <ArrowRight size={16} /></span>
+                <span className="text-project-primary font-medium flex items-center gap-1">{t('home.explore')} <ArrowRight size={16} /></span>
               </Link>
             ))}
           </div>
@@ -78,11 +78,11 @@ export const Home: React.FC = () => {
             />
           </div>
           <div className="flex-1">
-            <h2 className="text-4xl font-bold mb-6 text-slate-800 dark:text-white">Community Driven. <br/>Performance Focused.</h2>
+            <h2 className="text-4xl font-bold mb-6 text-slate-800 dark:text-white whitespace-pre-line">{t('home.community_title')}</h2>
             <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
-              Project Sleep starts where the manufacturer left off. We breathe new life into your device with optimized kernels, enhanced UI, and the latest security patches. 
+              {t('home.community_desc')}
             </p>
-            <Link to="/about" className="text-project-primary font-bold text-lg hover:underline">Read our mission &rarr;</Link>
+            <Link to="/about" className="text-project-primary font-bold text-lg hover:underline">{t('home.read_mission')} &rarr;</Link>
           </div>
         </div>
       </section>
