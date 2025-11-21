@@ -16,6 +16,9 @@ const LANGUAGES = [
   { code: 'bn', name: 'Bengali', flag: '🇧🇩' },
 ];
 
+// Logo Bulan (Data URI) agar selalu tampil tanpa dependensi eksternal
+const LOGO_SRC = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQxIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcDojM0I4MkY2O3N0b3Atb3BhY2l0eToxIiAvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzBCM0Q2NjtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNODAgNTBBMzUgMzUgMCAwIDEgMTMgMzhBNDUgNDUgMCAxIDAgNzIgOTdBMzUgMzUgMCAwIDEgODAgNTB6IiBmaWxsPSJ1cmwoI2dyYWQxKSIvPjx0ZXh0IHg9IjU1IiB5PSI0NSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNGRkYiIG9wYWNpdHk9IjAuNyIgdHJhbnNmb3JtPSJyb3RhdGUoMTUgNTUgNDUpIj5aPC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSIzNSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNGRkYiIG9wYWNpdHk9IjAuNyIgdHJhbnNmb3JtPSJyb3RhdGUoMjAgNzAgMzUpIj56PC90ZXh0Pjwvc3ZnPg==";
+
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t, i18n } = useTranslation();
   const { user, logout } = useContext(AuthContext);
@@ -65,9 +68,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 bg-project-primary rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                <span className="text-white font-bold text-xl">S</span>
-              </div>
+              <img 
+                src={LOGO_SRC} 
+                alt="Project Sleep" 
+                className="w-10 h-10 rounded-full shadow-lg group-hover:scale-105 transition-transform bg-white dark:bg-transparent p-0.5"
+              />
               <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-project-primary to-project-accent">
                 Project Sleep
               </span>
@@ -211,9 +216,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <div className="grid md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-project-primary rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold">S</span>
-                </div>
+                <img 
+                  src={LOGO_SRC} 
+                  alt="Project Sleep" 
+                  className="w-8 h-8 rounded-full shadow-sm bg-white dark:bg-transparent p-0.5"
+                />
                 <span className="text-xl font-bold">Project Sleep</span>
               </div>
               <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mb-6">
